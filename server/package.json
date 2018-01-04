@@ -1,0 +1,12 @@
+{
+  "name": "syl-game-launcher",
+  "version": "1.0.0",
+  "description": "SylvaX's Game Launcher Server written by Node.JS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node gameStart.js",
+    "show": "node timeCalculate.js"
+  },
+  "author": "MegaShow",
+  "license": "MIT"
+}
