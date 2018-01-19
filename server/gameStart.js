@@ -41,7 +41,7 @@ if (index === -1) {
     console.log('游戏开始时间 =>', startDate)
     console.log('游戏截至时间 =>', endDate, '\n')
     console.log('游戏时间 => ', hour, 'hour,', min, 'min,', sec, 'sec')
-    gameDB[index].playTime += sec
+    gameDB[index].playTime += time
     await fs.writeFileSync(gamePath, JSON.stringify(gameDB))
     playDB.push({
       id: playDB.length + 1,
