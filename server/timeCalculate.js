@@ -11,7 +11,7 @@ const gamePath = '../database/game.json'
 
 let gameDB = JSON.parse(fs.readFileSync(gamePath))
 gameDB.sort((a, b) => {
-  return a.playTime < b.playTime
+  return parseInt(b.playTime) - parseInt(a.playTime)
 })
 let index = 0
 let allTime = 0
