@@ -1,5 +1,5 @@
 namespace SylGameLauncher.Database {
-  public class Game {
+  class Game {
     private string nameEN;
     private string nameCN;
     private string developer;
