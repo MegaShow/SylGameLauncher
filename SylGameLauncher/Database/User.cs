@@ -1,10 +1,24 @@
-namespace SylGameLauncher.Database {
-  class User {
-    private string name;
-    private int playTime;
+using System;
+using System.Collections.Generic;
 
-    public void SetName(string _name) {
-      name = _name;
+namespace SylGameLauncher.Database {
+    public class User {
+        public string Name { get; set; }
+        public int PlayGameTimeSum { get; set; }
+        public Dictionary<int, int> PlayGameState { get; set; }
+
+        public User() {
+            PlayGameState = new Dictionary<int, int>();
+        }
+
+        public void Play(int gameId, DateTime start, DateTime end) {
+            int time = (int)(end - start).TotalSeconds;
+            PlayGameTimeSum += time;
+            if (PlayGameState.ContainsKey(gameId)) {
+                PlayGameState[gameId] += time;
+            } else {
+                PlayGameState.Add(gameId, time);
+            }
+        }
     }
-  }
 }

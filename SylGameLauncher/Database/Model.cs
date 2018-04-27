@@ -1,13 +1,15 @@
-using System.Json;
+using System.Collections.Generic;
 
 namespace SylGameLauncher.Database {
-  class Model {
-    private User user;
-    private Game[] game;
-    private Record[] record;
+    public class Model {
+        public User User { get; set; }
+        public List<Game> GameList { get; set; }
+        public List<Record> RecordList { get; set; }
 
-    public Model(string _username) {
-      user.SetName(_username);
+        public Model() {
+            User = new User();
+            GameList = new List<Game>();
+            RecordList = new List<Record>();
+        }
     }
-  }
 }
