@@ -32,7 +32,7 @@ namespace SylGameLauncher {
         }
 
         public void AddRecord(int gameId, DateTime start, DateTime end) {
-            Data.RecordList.Add(new Record(gameId, start, end));
+            Data.RecordList.Add(new Record(gameId, start.ToUniversalTime(), end.ToUniversalTime()));
             Data.User.Play(gameId, start, end);
         }
 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using SylGameLauncher;
 
 namespace SylGameLauncher.CLI {
     public class Program {
         private static SylGameLauncher launcher;
-        private static string folder = @"D:\Git\SylGameLauncher\database";
+        private static string folder = @"D:\Software\SylGameLauncher\database";
 
 
         static void Main(string[] args) {
@@ -113,12 +114,19 @@ namespace SylGameLauncher.CLI {
             int allHour = allTime / 3600 % 60;
             Console.WriteLine($"Play: {allHour} h, {allMinute} m, {allSecond} s");
             Dictionary<int, string> gameList = launcher.GetGameList();
-            foreach (var item in launcher.Data.User.PlayGameState.Keys) {
-                int time = launcher.Data.User.PlayGameState[item];
+            var timesMap = new List<KeyValuePair<int, int>>();
+            foreach (int id in launcher.Data.User.PlayGameState.Keys) {
+                timesMap.Add(new KeyValuePair<int, int>(id, launcher.Data.User.PlayGameState[id]));
+            }
+            timesMap.Sort(delegate (KeyValuePair<int, int> pair1, KeyValuePair<int, int> pair2) {
+                return pair2.Value.CompareTo(pair1.Value);
+            });
+            foreach (KeyValuePair<int, int> item in timesMap) {
+                int time = item.Value;
                 int second = time % 60;
                 int minute = time / 60 % 60;
                 int hour = time / 3600 % 60;
-                Console.WriteLine($"{item}. {gameList[item]}");
+                Console.WriteLine($"{item.Key}. {gameList[item.Key]}");
                 Console.WriteLine($"    {hour} h, {minute} m, {second} s");
             }
             Console.WriteLine();
@@ -127,11 +135,24 @@ namespace SylGameLauncher.CLI {
 
         private static void EditDatabase() {
             Console.WriteLine("1. Add Game");
-            Console.Write("[name]: ");
-            string name = Console.ReadLine();
-            Console.Write("[nameCN]: ");
-            string nameCN = Console.ReadLine();
-            launcher.AddGame(name, nameCN, string.Empty, string.Empty, DateTime.Now);
+            Console.WriteLine("2. Add Record");
+            Console.Write("Input: ");
+            string opr = Console.ReadLine();
+            if (opr == "1") {
+                Console.Write("[Name]: ");
+                string name = Console.ReadLine();
+                Console.Write("[NameCN]: ");
+                string nameCN = Console.ReadLine();
+                launcher.AddGame(name, nameCN, string.Empty, string.Empty, DateTime.Now);
+            } else if (opr == "2") {
+                Console.Write("[GameId]: ");
+                int gameId = Int32.Parse(Console.ReadLine());
+                Console.Write("[Start Time](format: yyyy-MM-dd hh:mm:ss): ");
+                DateTime start = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd hh:mm:ss", null);
+                Console.Write("[End Time](format: yyyy-MM-dd hh:mm:ss): ");
+                DateTime end = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd hh:mm:ss", null);
+                launcher.AddRecord(gameId, start, end);
+            }
             Console.WriteLine();
         }
 
